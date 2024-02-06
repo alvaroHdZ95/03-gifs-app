@@ -16,7 +16,7 @@ export class GifsService {
 
     this.loadLocalStorage();
 
-   }
+  }
 
   get tagsHistory(): string[] {
     return [...this._tagsHistory];
