@@ -30,6 +30,13 @@ export class GifsService {
 
     //* se queda solo con los 10 primeros valores de _tagsHistory
     this._tagsHistory = this._tagsHistory.splice(0, 10);
+
+    //* guarda en localStorage la búsqueda del usuario
+    this.saveLocalStorage();
+  }
+
+  private saveLocalStorage(): void {
+    localStorage.setItem('history', JSON.stringify( this.tagsHistory ))
   }
 
   async searchTag( tag: string ): Promise<void> {
