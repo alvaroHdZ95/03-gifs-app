@@ -1,11 +1,15 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
 
 @Injectable({ providedIn: 'root' })
 export class GifsService {
 
   private _tagsHistory: string[] = [];
+  private apiKey: string = '2rKkIxvbQInax0G1ucLTJqdVCKk2aLp9';
+  private serviceURL: string = 'https://api.giphy.com/v1/gifs';
 
-  constructor() { }
+  constructor( private http: HttpClient ) { }
 
   get tagsHistory(): string[] {
     return [...this._tagsHistory];
@@ -25,14 +29,26 @@ export class GifsService {
     this._tagsHistory = this._tagsHistory.splice(0, 10);
   }
 
-  searchTag( tag: string ): void {
+  async searchTag( tag: string ): Promise<void> {
     //* remplaza los espacios múltiples por uno solo y elimina aquellos al principio y
     //* al final del string
     tag = tag.replace(/\s+/g, ' ').trim();
     if ( tag.length === 0 ) return;
     this.organizeHistory(tag);
 
-    console.log(this._tagsHistory);
+    const params = new HttpParams()
+      .set('api_key', this.apiKey)
+      .set('limit', '10')
+      .set('q', tag );
+
+    this.http.get(`${ this.serviceURL }/search`, { params })
+      .subscribe( resp => {
+
+        console.log(resp);
+
+      })
+
+
   }
 
 }
